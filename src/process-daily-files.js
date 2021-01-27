@@ -1,11 +1,24 @@
 import fs from 'fs';
 
-(async function() {
-    const startDate = new Date('2021/01/01');
-    const endDate = new Date('2021/01/31');
+
+const consolidateDailyFilesAsync = async (startDateString, endDateString) => {
+    // verify dates
+    const messages = [];
+
+    if (!Date.parse(startDateString)) {
+        messages.push(`Invalid start date specified: ${startDate}`);
+    }
+
+    if (!Date.parse(endDateString)) {
+        messages.push(`Invalid end date specified: ${endDate}`);
+    }
+
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
 
     const currentDate = new Date(startDate);
     currentDate.setHours(0, 0, 0, 0);
+
 
     const logins = {};
     let totalLogins = 0;
@@ -27,6 +40,11 @@ import fs from 'fs';
                 }
 
                 data[account].forEach((a) => {
+                    /*
+                        i'm lazy.  getting the daily files takes a long time.
+                        the initial pull from Loggly had a bug and some
+                        events were duplicated, skip the dups here
+                    */
                     // eslint-disable-next-line max-len
                     if (!logins[account].some((l) => (l.timestamp === a.timestamp) && (l.clientId === a.clientId))) {
                         logins[account].push(a);
@@ -39,17 +57,13 @@ import fs from 'fs';
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    // fs.writeFileSync(`..\\data\\logins.total.json`, logins);
+    return {totalLogins, uniqueLogins, logins};
+};
+
+(async function() {
+    // eslint-disable-next-line max-len
+    const {totalLogins, uniqueLogins} = await consolidateDailyFilesAsync('2021/01/01', '2021/01/31');
 
     console.log(`unique logins: ${uniqueLogins}`);
     console.log(`total logins: ${totalLogins}`);
-
-    let keyCount = 0;
-    for (const account in logins) {
-        if (logins.hasOwnProperty(account)) {
-            keyCount += logins[account].length;
-        }
-    }
-
-    console.log(`key count: ${keyCount}`);
 })();
