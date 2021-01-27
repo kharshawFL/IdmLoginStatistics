@@ -6,7 +6,7 @@ import winston from 'winston';
 dotenv.config();
 
 const logger = winston.createLogger({
-    level: 'info',
+    level: 'debug',
     format: winston.format.json(),
     defaultMeta: {service: 'login-log-stats'},
     transports: [
@@ -93,7 +93,7 @@ async function getEventsAsync(rsid, page, token) {
             res.on('end', () => {
                 if (res.statusCode !== 200) {
                     // eslint-disable-next-line max-len
-                    reject(new Error({status: res.statusCode, message: res.statusMessage || 'error'}));
+                    reject(new Error({status: res.statusCode, message: res.statusMessage}));
                 } else {
                     resolve(JSON.parse(data));
                 }
@@ -101,7 +101,9 @@ async function getEventsAsync(rsid, page, token) {
         });
 
         req.on('error', (e) => {
-            reject(e);
+            reject(new Error({
+                status: '400',
+                message: e.message}));
         });
 
         req.end();
@@ -133,7 +135,9 @@ const getDailyEventsAsync = async (dateToProcess, token) => {
 
     const logins = {};
 
+    let retryPage = false;
     do {
+        retryPage = false;
         try {
             pageData = await getEventsAsync(rsid, page, token);
         } catch (e) {
@@ -142,7 +146,8 @@ const getDailyEventsAsync = async (dateToProcess, token) => {
             throw e;
         }
 
-        console.log(`processing page: ${page}`);
+        logger.info(`processing page: ${page}`);
+
         if (pageData && pageData.events) {
             pageData.events.forEach((e) => {
                 if (e.event.json.Name) {
@@ -176,7 +181,7 @@ const getDailyEventsAsync = async (dateToProcess, token) => {
 
             page++;
         } else {
-            logger.debug(pageData);
+            logger.debug(JSON.stringify(pageData));
             logger.info(`rsid not found.  get it again `);
             //
             // probably the RSID expired????
@@ -186,11 +191,12 @@ const getDailyEventsAsync = async (dateToProcess, token) => {
                 rsid = await runQueryAsync('Login Success',
                     dateToProcess.toISOString(),
                     dateToProcessEnd.toISOString(), token);
+                retryPage = true;
             } catch (e) {
                 logger.error(e);
             }
         }
-    } while (pageData.events && pageData.events.length > 0);
+    } while (retryPage || (pageData.events && pageData.events.length > 0));
 
     return logins;
 };
@@ -284,7 +290,7 @@ const processCommandLine = () => {
             logins = await getDailyEventsAsync(currentDate, token);
 
             // eslint-disable-next-line max-len
-            logger.info(`processing day ${currentDate.toISOString()} to ${currentEndDate.toISOString()}`);
+            logger.info(`processing day ${currentDate.toString()}`);
 
             fs.writeFileSync(dayFile, JSON.stringify(logins));
         } else {

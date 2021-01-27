@@ -20,7 +20,7 @@ import fs from 'fs';
         const data = JSON.parse(fs.readFileSync(filename));
 
         for (const account in data) {
-            if ({}.hasOwnProperty(data, account)) {
+            if (data.hasOwnProperty(account)) {
                 if (!logins.hasOwnProperty(account)) {
                     logins[account] = [];
                     uniqueLogins++;
@@ -33,7 +33,6 @@ import fs from 'fs';
                         totalLogins++;
                     }
                 });
-            // logins[account] = logins[account].concat(data[account]);
             }
         }
 
