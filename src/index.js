@@ -110,7 +110,7 @@ async function getEventsAsync(rsid, page, token) {
     });
 
     try {
-        events = await request;
+        events = await request();
     } catch (error) {
         console.log(error.message);
         events = error;
