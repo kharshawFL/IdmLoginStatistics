@@ -17,12 +17,7 @@ Things to do:
 Get the loggly logs
 `node src/index.js --start 2021/01/01 --end 2021/01/31`
 
-Calculate the numbers
-`node .\process-daily-files.js`
-
-I got lazy here. The dates are hard coded here.  
-
 ## TTD
-- Import the `consolidateDailyFilesAsync` into `index` and run the calculations from the main script
 - Add winston logging to `consolidateDailyFilesAsync
 - Make `consolidateDailyFilesAsync` async. Or just change the function name
+- write events to a database for reporting

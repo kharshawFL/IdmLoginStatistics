@@ -2,6 +2,7 @@ import https from 'https';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import winston from 'winston';
+import {consolidateDailyFilesAsync} from './process-daily-files.js';
 
 dotenv.config();
 
@@ -299,4 +300,10 @@ const processCommandLine = () => {
 
         currentDate.setDate(currentDate.getDate() + 1);
     };
+
+    // eslint-disable-next-line max-len
+    const {totalLogins, uniqueLogins} = await consolidateDailyFilesAsync(startDate.toDateString(), endDate.toDateString());
+
+    console.log(`total logins: ${totalLogins}`);
+    console.log(`unique users: ${uniqueLogins}`);
 })();

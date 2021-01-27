@@ -60,10 +60,4 @@ const consolidateDailyFilesAsync = async (startDateString, endDateString) => {
     return {totalLogins, uniqueLogins, logins};
 };
 
-(async function() {
-    // eslint-disable-next-line max-len
-    const {totalLogins, uniqueLogins} = await consolidateDailyFilesAsync('2021/01/01', '2021/01/31');
-
-    console.log(`unique logins: ${uniqueLogins}`);
-    console.log(`total logins: ${totalLogins}`);
-})();
+export {consolidateDailyFilesAsync};
