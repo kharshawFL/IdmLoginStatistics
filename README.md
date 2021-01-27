@@ -7,6 +7,8 @@ Loggly limits the amount of data it'll give you at any time (very annoying) and 
 
 There is a separate script to consolidate the daily files and perform some totals.
 
+See the anonymous async functions at the bottom of each file for execution entry point.
+
 ## Running It
 Things to do:
 1. Create `data` directory in hte root of the project
