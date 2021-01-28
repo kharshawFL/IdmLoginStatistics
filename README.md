@@ -13,11 +13,12 @@ See the anonymous async functions at the bottom of each file for execution entry
 Things to do:
 1. Create `data` directory in hte root of the project
 1. create an `.env` file with your Loggly username nad password.  See `.env.sample`.  Alternatively set some environment variables.
+1. Run `npm install`
 
 Get the loggly logs
 `node src/index.js --start 2021/01/01 --end 2021/01/31`
 
 ## TTD
-- Add winston logging to `consolidateDailyFilesAsync
+- Add winston logging to `consolidateDailyFilesAsync`
 - Make `consolidateDailyFilesAsync` async. Or just change the function name
 - write events to a database for reporting
