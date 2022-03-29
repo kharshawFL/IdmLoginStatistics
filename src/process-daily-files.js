@@ -26,7 +26,7 @@ const consolidateDailyFilesAsync = async (startDateString, endDateString) => {
 
     while (currentDate <= endDate) {
         // eslint-disable-next-line max-len
-        const filename = `..\\data\\logins.${currentDate.getFullYear()}_${currentDate.getMonth()+1}_${currentDate.getDate()}.json`;
+        const filename = `.\\data\\logins.${currentDate.getFullYear()}_${currentDate.getMonth()+1}_${currentDate.getDate()}.json`;
 
         console.log(`reading ${filename}`);
 
@@ -56,6 +56,19 @@ const consolidateDailyFilesAsync = async (startDateString, endDateString) => {
 
         currentDate.setDate(currentDate.getDate() + 1);
     }
+
+    const loginsArray = Object.keys(logins).map((k) => {
+        return {id: k, loginCount: logins[k].length};
+    });
+
+
+    loginsArray.filter((l) => l.loginCount > 100)
+        .sort((a, b) => b.loginCount - a.loginCount)
+        .forEach((highLogins) => {
+            // eslint-disable-next-line max-len
+            console.log(`${highLogins.id} logged in ${highLogins.loginCount} times`);
+        });
+
 
     return {totalLogins, uniqueLogins, logins};
 };

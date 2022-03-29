@@ -12,7 +12,11 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\index.js"
+            "program": "${workspaceFolder}\\src\\index.js",
+            "args": [
+                "--start", "2022/03/26",
+                "--end", "2022/03/26"
+              ]
         }
     ]
 }

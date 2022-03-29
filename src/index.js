@@ -35,12 +35,12 @@ async function runQueryAsync(term, begin, end, token) {
 
     };
 
-    console.log(`searching: https://${options.hostname}${options.path}`);
+    logger.debug(`searching: https://${options.hostname}${options.path}`);
 
     const request = new Promise((resolve, reject) => {
         const req = https.request(options, (res) => {
             let data = '';
-            console.log(`status: ${res.statusCode}`);
+            logger.debug(`status: ${res.statusCode}`);
 
             res.on('data', (d) => {
                 data += d.toString();
@@ -111,9 +111,9 @@ async function getEventsAsync(rsid, page, token) {
     });
 
     try {
-        events = await request();
+        events = await request;
     } catch (error) {
-        console.log(error.message);
+        logger.error(`getEventsAsync: {error}`);
         events = error;
     }
 
@@ -285,7 +285,7 @@ const processCommandLine = () => {
         let logins = {};
 
         // eslint-disable-next-line max-len
-        const dayFile = `..\\data\\logins.${currentDate.getFullYear()}_${currentDate.getMonth()+1}_${currentDate.getDate()}.json`;
+        const dayFile = `.\\data\\logins.${currentDate.getFullYear()}_${currentDate.getMonth()+1}_${currentDate.getDate()}.json`;
 
         if (!fs.existsSync(dayFile)) {
             logins = await getDailyEventsAsync(currentDate, token);
