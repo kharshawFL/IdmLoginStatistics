@@ -1,5 +1,6 @@
 # Data 
 data
+provider-data
 
 node_modules
 package-lock.json
