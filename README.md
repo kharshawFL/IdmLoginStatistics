@@ -22,3 +22,65 @@ Get the loggly logs
 - Add winston logging to `consolidateDailyFilesAsync`
 - Make `consolidateDailyFilesAsync` async. Or just change the function name
 - write events to a database for reporting
+
+
+# IdmLoginStatistics
+
+## Project Overview
+This project sets up a PostgreSQL database and pgAdmin using Docker Compose. The database is named `logins_db`, and it is used to store login statistics.
+
+## Project Structure
+```
+IdmLoginStatistics
+├── docker-compose.yml
+├── .env
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Setup Instructions
+
+1. **Clone the Repository**
+   Clone this repository to your local machine using:
+   ```
+   git clone <repository-url>
+   ```
+
+2. **Navigate to the Project Directory**
+   Change to the project directory:
+   ```
+   cd IdmLoginStatistics
+   ```
+
+3. **Configure Environment Variables**
+   Update the `.env` file with your desired database credentials and settings. The default values are provided in the `.env` file.
+
+4. **Start the Services**
+   Run the following command to start the PostgreSQL and pgAdmin services:
+   ```
+   docker-compose up -d
+   ```
+
+5. **Access pgAdmin**
+   Open your web browser and go to `http://localhost:8080`. Use the credentials specified in the `.env` file to log in.
+
+6. **Connect to PostgreSQL**
+   In pgAdmin, create a new server connection using the following details:
+   - **Host**: `db` (the service name defined in `docker-compose.yml`)
+   - **Port**: `5432`
+   - **Username**: The username specified in the `.env` file
+   - **Password**: The password specified in the `.env` file
+
+### Stopping the Services
+To stop the running services, use:
+```
+docker-compose down
+```
+
+### Additional Information
+Refer to the documentation for Docker and Docker Compose for more advanced configurations and options.

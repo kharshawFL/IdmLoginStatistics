@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
+    "debug": "node ./src/index.js --start 2023/10/01 --end 2023/10/16",
     "lint": "eslint src --ext .js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "pg": "^8.14.1",
     "require": "^2.4.20",
     "winston": "^3.3.3"
   },
